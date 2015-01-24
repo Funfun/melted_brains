@@ -11,9 +11,9 @@ func HelloServer(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/hello", HelloServer)
-	http.Handle("/", http.FileServer(http.Dir("/Volumes/Data/Projects/go/src/github.com/gophergala/melted_brains/static")))
-	err := http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/game/new", HelloServer)
+	http.Handle("/", http.FileServer(http.Dir("./static")))
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
