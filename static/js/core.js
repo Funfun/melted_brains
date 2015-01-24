@@ -21,8 +21,6 @@ function numberOFDupInStr(str){
   var res = str.match(/(\t{1,})/g);
 
   if(str[0] == "\t" && res){
-    console.log("Tab first", str[0] == "\t");
-    console.log("Tab size", res[0].length);
     return res[0].length;
   }
   else {
@@ -56,6 +54,11 @@ function onKeyPress(pEvent){
       window.tokenElem.el.innerHTML = setCarret(str);
     }
   }
+
+  if(pEvent.keyCode == 32 && pEvent.target == document.body) {
+    pEvent.preventDefault();
+    return false;
+  }
 }
 function setCarretAndSkipTab(offSet){
   // case01
@@ -83,7 +86,14 @@ function onLoad(){
   // we need global
   window.tokens = tokens;
   window.tokenElem = chooseNextAt(0);
-  document.onkeypress = onKeyPress;
-
+  window.onkeypress = onKeyPress;
+  // Disable scroll down when spacebar is pressed
+  // window.onkeydown = function(e) {
+  //   console.log(e.target.type);
+  //   if(e.keyCode == 32 && e.target == document.body) {
+  //       e.preventDefault();
+  //       return false;
+  //   }
+  // };
 }
 window.onload = onLoad;
