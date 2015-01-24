@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Go Racer!</title>
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script>
+      $(function() {
+        var ws = new WebSocket("ws://localhost:8000/events/");
+
+        ws.onmessage = function(e) {
+          $('body').append(e.data)
+        };
+        function onKeyPress(pEvent){
+          ws.send(pEvent.charCode);
+        };
+
+        document.onkeypress = onKeyPress;
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
