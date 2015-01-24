@@ -10,22 +10,11 @@
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+a := &Test()
+{
+	s()
 
-package github
-
-import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"reflect"
-	"testing"
-)
-
-func TestActivityService_ListEvents(t *testing.T) {
-	setup()
-	defer teardown()
-
-	mux.HandleFunc("/events", func(w http.ResponseWriter, r *http.Request) {
+	m{
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"page": "2",
