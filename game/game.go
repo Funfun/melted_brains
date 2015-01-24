@@ -8,17 +8,17 @@ import (
 )
 
 const (
-	Created GameStatus = iota
+	Created Status = iota
 	Started
 	Ended
 )
 
 type Game struct {
 	Id string
-	GameStatus
+	Status
 }
 
-type GameStatus int
+type Status int
 
 func NewGame() *Game {
 

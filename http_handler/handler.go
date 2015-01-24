@@ -36,15 +36,25 @@ func parseGameRequest(path string) (id string, action string) {
 	return
 }
 
+func getGame(id string) *game.Game {
+	if id == "random" {
+		return game.Repository.RandomJoinable()
+	} else {
+		return game.Repository.Find(id)
+	}
+}
 func GameHandler(w http.ResponseWriter, req *http.Request) {
 	id, action := parseGameRequest(req.URL.Path)
-	game := game.Repository.Find(id)
+	currentGame := getGame(id)
+	if currentGame == nil {
+		http.NotFound(w, req)
+	}
 
 	switch action {
 	case "join":
-		http.Redirect(w, req, "/game/"+game.Id+"/show", http.StatusFound)
+		http.Redirect(w, req, "/game/"+currentGame.Id+"/show", http.StatusFound)
 	case "show":
-		showTemplate.Execute(w, game)
+		showTemplate.Execute(w, currentGame)
 	}
 }
 
