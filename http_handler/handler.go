@@ -1,12 +1,15 @@
 package http_handler
 
 import (
+	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gophergala/melted_brains/game"
+	"golang.org/x/net/websocket"
 )
 
 var showTemplate *template.Template
@@ -43,5 +46,9 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 	case "show":
 		showTemplate.Execute(w, game)
 	}
+}
 
+func EventsHandler(ws *websocket.Conn) {
+	fmt.Printf("In handler")
+	io.Copy(ws, ws)
 }
