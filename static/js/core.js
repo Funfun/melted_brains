@@ -4,6 +4,7 @@ function parseTokens(){
   var collected = [];
   for(var i=0; i<elements.length; i++){
     if(["com"].indexOf(elements[i].className)==-1 && elements[i].innerHTML.replace(/\n|\t/g, '') != ''){
+      elements[i].classList.add('arc');
       collected.push(elements[i]);
     }
   }
@@ -46,8 +47,10 @@ function onKeyPress(pEvent){
 
     window.tokenElem.el.innerHTML = setCarretAndSkipTab(newOffset);
 
+    // next span element
     if( (newOffset+1) >= window.tokenElem.value.length || window.tokenElem.value == "&amp;"){
       window.tokenElem.el.innerHTML = window.tokenElem.value;
+      window.tokenElem.el.classList.remove('arc');
       window.tokenElem = chooseNextAt(window.tokenElem.index+1);
       var str = window.tokenElem.value;
       window.tokenElem.el.innerHTML = setCarret(str);
