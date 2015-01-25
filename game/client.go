@@ -1,13 +1,19 @@
 package game
 
-import "golang.org/x/net/websocket"
+import (
+	"fmt"
+	"strings"
+
+	"golang.org/x/net/websocket"
+)
 
 type Client struct {
+	Username string
 	*websocket.Conn
 }
 
-func NewClient(conn *websocket.Conn) *Client {
-	return &Client{conn}
+func NewClient(username string, conn *websocket.Conn) *Client {
+	return &Client{username, conn}
 }
 
 type Clients []*Client
@@ -19,4 +25,11 @@ func (clients Clients) Contains(c *Client) bool {
 		}
 	}
 	return false
+}
+func (clients Clients) Serialize() string {
+	clientReps := []string{}
+	for index, client := range clients {
+		clientReps = append(clientReps, fmt.Sprintf("%d#%s", index, client.Username))
+	}
+	return strings.Join(clientReps, "&")
 }

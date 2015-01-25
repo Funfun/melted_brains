@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Go Racer!</title>
     <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
     <script src="/js/core.js"></script>
   </head>
@@ -42,10 +43,13 @@ var Repository = &GameRepository{}
 
     <script>
       $(function() {
-        window.ws = new WebSocket("ws://localhost:8000/events/{{.Id}}");
+        username = $.cookie("username");
+        window.ws = new WebSocket("ws://localhost:8000/events/{{.Id}}?username="+username);
 
         window.ws.onmessage = function(e) {
-          window.GO_RACER_NS.carretMoveLogic(e.data);
+
+          $(document.body).append(e.data)
+          // window.GO_RACER_NS.carretMoveLogic(e.data);
         };
       });
     </script>

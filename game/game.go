@@ -3,6 +3,7 @@ package game
 import (
 	"crypto/sha1"
 	"encoding/base64"
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -30,9 +31,17 @@ type Game struct {
 func (g *Game) KillBroadCast() {
 	g.KillChannel <- true
 }
+func (g *Game) PublishClients() {
+	g.Publish(fmt.Sprintf("users:%s", g.Clients.Serialize()))
+}
 
-func (g *Game) Add(conn *websocket.Conn) {
-	g.Clients = append(g.Clients, NewClient(conn))
+func (g *Game) Add(username string, conn *websocket.Conn) (int, error) {
+	fmt.Printf("g.Clients : %v %v\n", g.Clients, username)
+	g.Clients = append(g.Clients, NewClient(username, conn))
+	g.PublishClients()
+	//TODO: Check number of clients
+	//TODO: Start game if full
+	return len(g.Clients), nil
 }
 func (g *Game) RemoveClients(toRemove Clients) {
 	newClients := Clients{}
@@ -46,6 +55,10 @@ func (g *Game) RemoveClients(toRemove Clients) {
 
 func (g *Game) Publish(event string) {
 	g.MessageChannel <- event
+}
+
+func (g *Game) PublishFromUser(userId int, char string) {
+	g.Publish(fmt.Sprintf("k:%d:%s", userId, char))
 }
 
 func (g *Game) BroadCast() {
@@ -63,6 +76,7 @@ func (g *Game) BroadCast() {
 			}
 
 		case _ = <-time.After(10 * time.Minute):
+			Repository.Delete(g)
 			log.Printf("Timing out game %s\n", g.Id)
 			return
 		}
