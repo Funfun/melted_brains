@@ -12,7 +12,7 @@
   <title>Gopher Run</title>
 
   <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.1/flatly/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
   <link href="/css/freelancer.css" rel="stylesheet">
@@ -64,7 +64,7 @@
               <form id="form_id" action="/game/{{.Id}}/new_user" method="post">
               <div class="input-group">
 
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="">
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="submit">Go!</button>
                 </span>
@@ -82,7 +82,7 @@
   <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
   <!-- Bootstrap Core JavaScript -->
-  <script src="/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
   <!-- Plugin JavaScript -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
