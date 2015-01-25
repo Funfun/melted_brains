@@ -52,6 +52,7 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 	currentGame := getGame(id)
 	if currentGame == nil {
 		http.NotFound(w, req)
+		return
 	}
 	currentUser := getUser(req)
 	fmt.Printf("%v, %v\n", id, action)

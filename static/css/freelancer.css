@@ -130,6 +130,16 @@ header .intro-text .skills {
     font-weight: 300;
 }
 
+.skills-warning {
+  font-size: 1.0em;
+  font-weight: 300;
+  color: orange;
+}
+
+.img-enter-name {
+  width: 20%;
+}
+
 @media(min-width:768px) {
     header .container {
         padding-top: 200px;
