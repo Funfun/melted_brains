@@ -17,16 +17,31 @@ const (
 )
 
 type MessageChannel chan string
+type KillChannel chan bool
 
 type Game struct {
 	Id string
 	Status
 	Clients
 	MessageChannel
+	KillChannel
+}
+
+func (g *Game) KillBroadCast() {
+	g.KillChannel <- true
 }
 
 func (g *Game) Add(conn *websocket.Conn) {
 	g.Clients = append(g.Clients, NewClient(conn))
+}
+func (g *Game) RemoveClients(toRemove Clients) {
+	newClients := Clients{}
+	for _, client := range g.Clients {
+		if !toRemove.Contains(client) {
+			newClients = append(newClients, client)
+		}
+	}
+	g.Clients = newClients
 }
 
 func (g *Game) Publish(event string) {
@@ -34,12 +49,22 @@ func (g *Game) Publish(event string) {
 }
 
 func (g *Game) BroadCast() {
-	for msg := range g.MessageChannel {
-		for _, client := range g.Clients {
-			if err := websocket.Message.Send(client.Conn, msg); err != nil {
-				// TODO: Remove conn on failure
-				log.Println("Sending failed")
+	for {
+		select {
+		case msg := <-g.MessageChannel:
+			erroredClients := Clients{}
+			for _, client := range g.Clients {
+				if err := websocket.Message.Send(client.Conn, msg); err != nil {
+					erroredClients = append(erroredClients, client)
+				}
 			}
+			if len(erroredClients) > 0 {
+				g.RemoveClients(erroredClients)
+			}
+
+		case _ = <-time.After(10 * time.Minute):
+			log.Printf("Timing out game %s\n", g.Id)
+			return
 		}
 	}
 }

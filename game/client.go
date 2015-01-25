@@ -11,3 +11,12 @@ func NewClient(conn *websocket.Conn) *Client {
 }
 
 type Clients []*Client
+
+func (clients Clients) Contains(c *Client) bool {
+	for _, b := range clients {
+		if b == c {
+			return true
+		}
+	}
+	return false
+}
