@@ -32,3 +32,13 @@
   padding: 1px 2px;
   font-size: small;
 }
+.code_field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+}
+.another_users_field {
+  opacity: 0;
+  z-index: 100;
+}
