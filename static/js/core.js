@@ -63,12 +63,12 @@ function onKeyPress(pEvent){
 function setCarretAndSkipTab(offSet){
   // case01
   if(window.tokenElem.value == "&amp;"){
-    return (window.tokenElem.value + "|");
+    return (window.tokenElem.value + window.carret);
   }
-  return window.tokenElem.value.substr(0, offSet+1) + "|" + window.tokenElem.value.substr(offSet+1);
+  return window.tokenElem.value.substr(0, offSet+1) + window.carret + window.tokenElem.value.substr(offSet+1);
 }
 function setCarret(str){
-  return "|" + str;
+  return window.carret + str;
 }
 function chooseNextAt(idx){
   console.log("idx", idx);
@@ -84,6 +84,7 @@ function onLoad(){
       tokens = parseTokens(codeBlock);
 
   // we need global
+  window.carret = "<span class='carret blink'></span>"
   window.tokens = tokens;
   window.tokenElem = chooseNextAt(0);
   window.onkeypress = onKeyPress;
