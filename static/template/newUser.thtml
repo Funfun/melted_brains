@@ -64,7 +64,7 @@
               <form id="form_id" action="/game/{{.Id}}/new_user" method="post">
               <div class="input-group">
 
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" name="username" class="form-control" placeholder="">
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="submit">Go!</button>
                 </span>
