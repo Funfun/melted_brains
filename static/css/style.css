@@ -42,3 +42,6 @@
   opacity: 0;
   z-index: 100;
 }
+.board {
+  position: absolute;
+}

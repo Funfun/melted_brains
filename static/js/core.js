@@ -17,7 +17,8 @@ function showWinners(){
     var div = $("<li></li>").html(window.users_ids[u]);
     board.append(div);
   }
-  board.show();
+  $('.board').css({left: $('pre').width() + 100, top: 100});
+  $('.board').show();
 }
 function MacOsXCharCode(charCode){
   if(charCode == 13){
