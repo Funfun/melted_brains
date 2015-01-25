@@ -116,7 +116,7 @@ window.GO_RACER_NS['prepareGameField'] = function(){
       if(userName != window.current_user_id){
         var carret = $("<span></span>");
         carret.addClass('carret blink');
-        carret.offset({top: 0, left: 0}).hide();
+        carret.offset({top: 0 + 100, left: 0}).hide();
         $(document.body).append(carret);
 
         var flag = $("<span></span>");
