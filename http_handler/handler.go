@@ -68,13 +68,19 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 			newUserTemplate.Execute(w, currentGame)
 		} else {
 			setUser(currentUser, w)
-			showTemplate.Execute(w, currentGame)
+			showTemplate.Execute(w, ShowView{Game: currentGame, User: currentUser})
 		}
 	case "new_user":
 		createUser(w, req)
 		http.Redirect(w, req, "/game/"+currentGame.Id+"/show", http.StatusFound)
 	}
 }
+
+type ShowView struct {
+	*game.User
+	*game.Game
+}
+
 func getUser(req *http.Request) *game.User {
 	cookie, err := req.Cookie("username")
 	if err != nil {
