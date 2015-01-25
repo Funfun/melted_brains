@@ -52,9 +52,10 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 	currentGame := getGame(id)
 	if currentGame == nil {
 		http.NotFound(w, req)
+		return
 	}
 	currentUser := getUser(req)
-	fmt.Printf("%v, %v\n", id, action)
+	fmt.Printf("%v, %v, %v\n", id, action, currentUser)
 	switch action {
 	case "join":
 		if currentUser == nil {
@@ -85,8 +86,7 @@ func setUser(user *game.User, w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{Name: "username", Value: user.Name})
 }
 func createUser(w http.ResponseWriter, req *http.Request) {
-	username := req.FormValue("username")
-	fmt.Printf("USERNAME: %v\n", username)
+	username := req.PostFormValue("username")
 	var user *game.User
 	if username == "" {
 		user = game.UserWithRandomName()
