@@ -54,37 +54,15 @@
     </nav>
 
     <section class="" id="main_game">
-    <div class='wrapper'></div>
-  </section>
+      <div class='wrapper'></div>
+    </section>
+    <div class='board' style='display: none'>
+      <h1>Results</h1>
+      <ol></ol>
+    </div>
 <pre style="display:none;" id="template">
 //example
 package game
-
-import "math/rand"
-
-type GameRepository struct {
-  Games
-}
-
-func (gs *GameRepository) RandomJoinable() *Game {
-  games := gs.Games.Joinable()
-  if len(games) == 0 {
-    return gs.Create()
-  }
-  return games[rand.Intn(len(games))]
-}
-
-func (gs *GameRepository) Find(id string) *Game {
-  return gs.Games.Find(id)
-}
-
-func (gs *GameRepository) Create() *Game {
-  game := NewGame()
-  gs.Games = append(gs.Games, game)
-  return game
-}
-
-var Repository = &GameRepository{}
 </pre>
 
     <script>
@@ -93,7 +71,7 @@ var Repository = &GameRepository{}
   };
   $(function() {
     username = $.cookie("username");
-    window.ws = new WebSocket("ws://kamputer.local:8000/events/{{.Id}}?username="+username);
+    window.ws = new WebSocket("ws://localhost:8000/events/{{.Id}}?username="+username);
 
     window.ws.onmessage = function(e) {
       var tokens = e.data.split(":");

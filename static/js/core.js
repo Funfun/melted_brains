@@ -11,7 +11,14 @@ window.GO_RACER_NS['parseTokens'] = function (elements){
   }
   return collected;
 }
-
+function showWinners(){
+  var board = $('.board ol');
+  for(var u in window.winner_list){
+    var div = $("<li></li>").html(window.users_ids[u]);
+    board.append(div);
+  }
+  board.show();
+}
 function MacOsXCharCode(charCode){
   if(charCode == 13){
     return 10;
@@ -58,7 +65,13 @@ window.GO_RACER_NS['carretMoveLogic'] = function(charCode, user){
       if(user == window.current_user_id){
         tokenElem.el.classList.remove('arc');
       }
-
+      if(tokenElem.index+1 == window.users[user].tokens.length){
+        window.winner_list.push(user);
+        if(window.winner_list.length == Object.keys(window.users_ids).length){
+          showWinners();
+        }
+        return false;
+      }
       window.users[user].tokenElem = window.GO_RACER_NS.chooseNextAt(user, tokenElem.index+1);
       var str = window.users[user].tokenElem.value;
       window.users[user].tokenElem.el.innerHTML = setCarret(str);
@@ -98,6 +111,7 @@ window.GO_RACER_NS['prepareGameField'] = function(){
   var codeBlock;
   // we need global
   window.users = {};
+  window.winner_list = [];
   window.carret = "<span class='carret blink'></span>";
   window.colors = ['#FFA500', '#FF4500', '#DA70D6', '#DB7093'];
 
