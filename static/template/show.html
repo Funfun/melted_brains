@@ -17,6 +17,8 @@
       }
       #code_user1 {}
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     <script src="/js/core.js"></script>
   </head>
   <body>
@@ -115,12 +117,16 @@ var Repository = &GameRepository{}
       $(function() {
         window.ws = new WebSocket("ws://localhost:8000/events/{{.Id}}");
         window.users = {self: {}, user1: {}};
+        username = $.cookie("username");
+        window.ws = new WebSocket("ws://crismonkey.local:8000/events/{{.Id}}?username="+username);
+
         window.ws.onmessage = function(e) {
+          // $(document.body).append(e.data)
           window.GO_RACER_NS.carretMoveLogic(e.data, 'self');
         };
-        setTimeout(function(){
-          window.GO_RACER_NS.user1();
-        }, 2000);
+        // setTimeout(function(){
+        //   window.GO_RACER_NS.user1();
+        // }, 2000);
         // window.GO_RACER_NS.user2();
       });
     </script>

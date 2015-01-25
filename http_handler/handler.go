@@ -67,6 +67,7 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 		if currentUser == nil {
 			newUserTemplate.Execute(w, currentGame)
 		} else {
+			setUser(currentUser, w)
 			showTemplate.Execute(w, currentGame)
 		}
 	case "new_user":
@@ -83,7 +84,7 @@ func getUser(req *http.Request) *game.User {
 	}
 }
 func setUser(user *game.User, w http.ResponseWriter) {
-	http.SetCookie(w, &http.Cookie{Name: "username", Value: user.Name})
+	http.SetCookie(w, &http.Cookie{Name: "username", Value: user.Name, HttpOnly: false})
 }
 func createUser(w http.ResponseWriter, req *http.Request) {
 	username := req.PostFormValue("username")
@@ -98,8 +99,13 @@ func createUser(w http.ResponseWriter, req *http.Request) {
 
 func EventsHandler(ws *websocket.Conn) {
 	id, _ := parseGameRequest(ws.Request().URL.Path)
+	currentUser := ws.Request().FormValue("username")
 	currentGame := getGame(id)
-	currentGame.Add(ws)
+	userId, error := currentGame.Add(currentUser, ws)
+	if error != nil {
+		//TODO: Not allowed in game!
+		return
+	}
 
 	for {
 		var event string
@@ -108,6 +114,6 @@ func EventsHandler(ws *websocket.Conn) {
 			// currentGame.ClientLost()
 			return
 		}
-		currentGame.Publish(event)
+		currentGame.PublishFromUser(userId, event)
 	}
 }
