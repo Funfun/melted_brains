@@ -42,11 +42,41 @@ var Repository = &GameRepository{}
 
 
     <script>
+      window.users = {
+        0: ""
+      };
       $(function() {
         username = $.cookie("username");
         window.ws = new WebSocket("ws://localhost:8000/events/{{.Id}}?username="+username);
 
         window.ws.onmessage = function(e) {
+          var tokens = e.data.split(":");
+          var command=tokens[0];
+          var params=tokens[1];
+
+          switch(command) {
+            case "w":
+              var tokens = params.split("#");
+              var user = tokens[0];
+              var key = tokens[1];
+              window.GO_RACER_NS.carretMoveLogic(key);
+              break;
+            case "users":
+              var tokens = params.split("&");
+              $(tokens).each(function(index, val){
+                var tokensInside = val.split("#");
+                var id = parseInt(tokensInside[0],10);
+                var name = tokensInside[1];
+                window.users[id] = name;
+              })
+              break;
+            case "start":
+              //TODO: Write start logic
+              break;
+            case "current_user":
+              window.current_user_id = parseInt(params, 10);
+              break;
+          }
 
           $(document.body).append(e.data)
           // window.GO_RACER_NS.carretMoveLogic(e.data);

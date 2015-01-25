@@ -39,9 +39,11 @@ func (g *Game) Add(username string, conn *websocket.Conn) (int, error) {
 	fmt.Printf("g.Clients : %v %v\n", g.Clients, username)
 	g.Clients = append(g.Clients, NewClient(username, conn))
 	g.PublishClients()
+	id := len(g.Clients) - 1
+	websocket.Message.Send(conn, fmt.Sprintf("current_user:%d", id))
 	//TODO: Check number of clients
 	//TODO: Start game if full
-	return len(g.Clients), nil
+	return id, nil
 }
 func (g *Game) RemoveClients(toRemove Clients) {
 	newClients := Clients{}
@@ -58,7 +60,7 @@ func (g *Game) Publish(event string) {
 }
 
 func (g *Game) PublishFromUser(userId int, char string) {
-	g.Publish(fmt.Sprintf("k:%d:%s", userId, char))
+	g.Publish(fmt.Sprintf("k:%d#%s", userId, char))
 }
 
 func (g *Game) BroadCast() {
