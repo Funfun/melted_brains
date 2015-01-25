@@ -1,9 +1,7 @@
 package http_handler
 
 import (
-	"fmt"
 	"html/template"
-	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -59,6 +57,18 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func EventsHandler(ws *websocket.Conn) {
-	fmt.Printf("In handler")
-	io.Copy(ws, ws)
+	id, _ := parseGameRequest(ws.Request().URL.Path)
+	currentGame := getGame(id)
+	// currentGame
+	currentGame.Add(ws)
+
+	for {
+		var event string
+		if err := websocket.Message.Receive(ws, &event); err != nil {
+			//TODO: Remove client on error
+			// currentGame.ClientLost()
+			return
+		}
+		currentGame.Publish(event)
+	}
 }
