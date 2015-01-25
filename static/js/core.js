@@ -1,8 +1,7 @@
 window.GO_RACER_NS = {}
 
-window.GO_RACER_NS['parseTokens'] = function (){
+window.GO_RACER_NS['parseTokens'] = function (elements){
   // skip comment & new lines
-  var elements = arguments[0].getElementsByTagName('span');
   var collected = [];
   for(var i=0; i<elements.length; i++){
     if(["com"].indexOf(elements[i].className)==-1 && elements[i].innerHTML.replace(/\n|\t/g, '') != ''){
@@ -98,13 +97,15 @@ window.GO_RACER_NS['chooseNextAt'] = function(user, idx){
 window.GO_RACER_NS['prepareGameField'] = function(){
   var codeBlock;
   // we need global
+  window.users = {};
   window.carret = "<span class='carret blink'></span>";
   window.colors = ['#FFA500', '#FF4500', '#DA70D6', '#DB7093'];
 
   var tokens = null;
-  for (var userName in window.users) {
-    if (users.hasOwnProperty(userName)) {
-      codeBlock = document.getElementById('code_'+userName);
+  for (var userName in window.users_ids) {
+    console.log('visit', userName);
+    if (window.users_ids.hasOwnProperty(userName)) {
+      codeBlock = $('#code_'+userName + ' span');
       tokens = window.GO_RACER_NS.parseTokens(codeBlock);
 
       window.users[userName] = {
@@ -122,7 +123,7 @@ window.GO_RACER_NS['prepareGameField'] = function(){
 
         flag.addClass('flag');
         flag.css('background-color', window.colors.pop());
-        flag.html(userName).hide();
+        flag.html(window.users_ids[userName]).hide();
         $(document.body).append(flag);
         window.users[userName]['carret'] = carret;
         window.users[userName]['flag'] = flag;

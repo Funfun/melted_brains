@@ -71,16 +71,14 @@ var Repository = &GameRepository{}
           //TODO: Re-Render Users
           break;
         case "start":
-
-
           //TODO: Write start logic
           var template = $('#template');
           for(var id in window.users_ids) {
-            var pre = $("<pre/>").html(template.html()).prop("id", 'code_'+id).addClass('code_field');
+            var pre = $("<pre/>").html(template.html()).prop("id", 'code_'+id).addClass('prettyprint code_field');
             if(id != window.current_user_id){
               pre.addClass('another_users_field');
             }
-            $(document.body).append(pre);
+            $('.wrapper').append(pre);
           }
           var js = $("<script/>").attr('src', "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?callback=js_ident")
           $(document.body).append(js);
@@ -106,5 +104,6 @@ var Repository = &GameRepository{}
     </script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <div class='wrapper'></div>
   </body>
 </html>
