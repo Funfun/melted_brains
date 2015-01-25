@@ -16,11 +16,11 @@ var newUserTemplate *template.Template
 
 func init() {
 	var err error
-	showTemplate, err = template.ParseFiles("static/template/show.thtml")
+	showTemplate, err = template.ParseFiles("static/template/show.html")
 	if err != nil {
 		log.Panicf("Cant parse templates %v", err)
 	}
-	newUserTemplate, err = template.ParseFiles("static/template/newUser.thtml")
+	newUserTemplate, err = template.ParseFiles("static/template/newUser.html")
 	if err != nil {
 		log.Panicf("Cant parse templates %v", err)
 	}
