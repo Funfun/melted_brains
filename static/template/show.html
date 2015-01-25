@@ -41,7 +41,7 @@ var Repository = &GameRepository{}
 </pre>
 
     <script>
-      window.users = {
+      window.users_ids = {
     0: ""
   };
   $(function() {
@@ -66,15 +66,16 @@ var Repository = &GameRepository{}
             var tokensInside = val.split("#");
             var id = parseInt(tokensInside[0],10);
             var name = tokensInside[1];
-            window.users[id] = name;
+            window.users_ids[id] = name;
           })
           //TODO: Re-Render Users
           break;
         case "start":
 
+
           //TODO: Write start logic
           var template = $('#template');
-          for(var id in window.users) {
+          for(var id in window.users_ids) {
             var pre = $("<pre/>").html(template.html()).prop("id", 'code_'+id).addClass('code_field');
             if(id != window.current_user_id){
               pre.addClass('another_users_field');
