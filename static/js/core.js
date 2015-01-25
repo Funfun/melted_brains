@@ -21,8 +21,6 @@ function numberOFDupInStr(str){
   var res = str.match(/(\t{1,})/g);
 
   if(str[0] == "\t" && res){
-    console.log("Tab first", str[0] == "\t");
-    console.log("Tab size", res[0].length);
     return res[0].length;
   }
   else {
@@ -56,16 +54,21 @@ function onKeyPress(pEvent){
       window.tokenElem.el.innerHTML = setCarret(str);
     }
   }
+
+  if(pEvent.keyCode == 32 && pEvent.target == document.body) {
+    pEvent.preventDefault();
+    return false;
+  }
 }
 function setCarretAndSkipTab(offSet){
   // case01
   if(window.tokenElem.value == "&amp;"){
-    return (window.tokenElem.value + "|");
+    return (window.tokenElem.value + window.carret);
   }
-  return window.tokenElem.value.substr(0, offSet+1) + "|" + window.tokenElem.value.substr(offSet+1);
+  return window.tokenElem.value.substr(0, offSet+1) + window.carret + window.tokenElem.value.substr(offSet+1);
 }
 function setCarret(str){
-  return "|" + str;
+  return window.carret + str;
 }
 function chooseNextAt(idx){
   console.log("idx", idx);
@@ -81,9 +84,17 @@ function onLoad(){
       tokens = parseTokens(codeBlock);
 
   // we need global
+  window.carret = "<span class='carret blink'></span>"
   window.tokens = tokens;
   window.tokenElem = chooseNextAt(0);
-  document.onkeypress = onKeyPress;
-
+  window.onkeypress = onKeyPress;
+  // Disable scroll down when spacebar is pressed
+  // window.onkeydown = function(e) {
+  //   console.log(e.target.type);
+  //   if(e.keyCode == 32 && e.target == document.body) {
+  //       e.preventDefault();
+  //       return false;
+  //   }
+  // };
 }
 window.onload = onLoad;

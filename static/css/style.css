@@ -1,0 +1,26 @@
+.arc {
+  color: gray;
+}
+
+.carret {
+  padding: 0;
+  margin: 0;
+  color: black;
+  width: 1px;
+  height: inherit;
+  border-left: 1px solid black;
+}
+.blink {
+  animation: blink 1s steps(2, start) infinite;
+  -webkit-animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
