@@ -3,6 +3,7 @@ package game
 import (
 	"crypto/sha1"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -36,11 +37,18 @@ func (g *Game) PublishClients() {
 }
 
 func (g *Game) Add(username string, conn *websocket.Conn) (int, error) {
+	if g.Status != Created {
+		return 0, errors.New("Already started")
+	}
 	fmt.Printf("g.Clients : %v %v\n", g.Clients, username)
 	g.Clients = append(g.Clients, NewClient(username, conn))
 	g.PublishClients()
 	id := len(g.Clients) - 1
 	websocket.Message.Send(conn, fmt.Sprintf("current_user:%d", id))
+	if id == 3 {
+		g.Start()
+
+	}
 	//TODO: Check number of clients
 	//TODO: Start game if full
 	return id, nil
@@ -57,6 +65,15 @@ func (g *Game) RemoveClients(toRemove Clients) {
 
 func (g *Game) Publish(event string) {
 	g.MessageChannel <- event
+}
+
+func (g *Game) Start() {
+	g.Status = Started
+	g.PublishStart()
+}
+
+func (g *Game) PublishStart() {
+	g.Publish("start:")
 }
 
 func (g *Game) PublishFromUser(userId int, char string) {
