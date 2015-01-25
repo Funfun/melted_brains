@@ -1,4 +1,6 @@
-function parseTokens(){
+window.GO_RACER_NS = {}
+
+window.GO_RACER_NS['parseTokens'] = function (){
   // skip comment & new lines
   var elements = arguments[0].getElementsByTagName('span');
   var collected = [];
@@ -8,6 +10,7 @@ function parseTokens(){
       collected.push(elements[i]);
     }
   }
+  debugger;
   return collected;
 }
 
@@ -26,12 +29,10 @@ function numberOFDupInStr(str){
   else {
     return 0;
   }
-
 }
 
-function onKeyPress(pEvent){
-  var charCode = pEvent.charCode,
-      newOffset = null,
+window.GO_RACER_NS['carretMoveLogic'] = function(charCode){
+  var newOffset = null,
       isNextTab,
       i;
   if(MacOsXCharCode(charCode) == window.tokenElem.value.charCodeAt(window.tokenElem.offSet)){
@@ -49,11 +50,15 @@ function onKeyPress(pEvent){
     if( (newOffset+1) >= window.tokenElem.value.length || window.tokenElem.value == "&amp;"){
       window.tokenElem.el.innerHTML = window.tokenElem.value;
       window.tokenElem.el.classList.remove('arc');
-      window.tokenElem = chooseNextAt(window.tokenElem.index+1);
+      window.tokenElem = window.GO_RACER_NS.chooseNextAt(window.tokenElem.index+1);
       var str = window.tokenElem.value;
       window.tokenElem.el.innerHTML = setCarret(str);
     }
   }
+}
+
+window.GO_RACER_NS['onKeyPress'] = function (pEvent){
+  window.ws.send(pEvent.charCode);
 
   if(pEvent.keyCode == 32 && pEvent.target == document.body) {
     pEvent.preventDefault();
@@ -70,8 +75,7 @@ function setCarretAndSkipTab(offSet){
 function setCarret(str){
   return window.carret + str;
 }
-function chooseNextAt(idx){
-  console.log("idx", idx);
+window.GO_RACER_NS['chooseNextAt'] = function(idx){
   return {
     index: idx,
     el: window.tokens[idx],
@@ -79,22 +83,12 @@ function chooseNextAt(idx){
     offSet: 0
   }
 }
-function onLoad(){
-  var codeBlock = document.getElementById('code'),
-      tokens = parseTokens(codeBlock);
 
+window.GO_RACER_NS['prepareGameField'] = function(){
+  var codeBlock = document.getElementById('code');
   // we need global
-  window.carret = "<span class='carret blink'></span>"
-  window.tokens = tokens;
-  window.tokenElem = chooseNextAt(0);
-  window.onkeypress = onKeyPress;
-  // Disable scroll down when spacebar is pressed
-  // window.onkeydown = function(e) {
-  //   console.log(e.target.type);
-  //   if(e.keyCode == 32 && e.target == document.body) {
-  //       e.preventDefault();
-  //       return false;
-  //   }
-  // };
+  window.carret = "<span class='carret blink'></span>";
+  window.tokens = window.GO_RACER_NS.parseTokens(codeBlock);
+  window.tokenElem = window.GO_RACER_NS.chooseNextAt(0);
+  window.onkeypress = window.GO_RACER_NS.onKeyPress;
 }
-window.onload = onLoad;
