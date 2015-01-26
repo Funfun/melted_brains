@@ -1,3 +1,29 @@
+window.preventType = function(){
+  window.onkeypress = function(){
+    return false;
+  }
+}
+
+window.allowType = function(){
+  window.onkeypress = window.GO_RACER_NS.onKeyPress;
+}
+window.countDown = function(){
+  $('.countdown .counter h1').html("3");
+  $('.countdown').show();
+  setTimeout(function(){
+    $('.countdown .counter h1').html("2");
+  }, 1000)
+  setTimeout(function(){
+    $('.countdown .counter h1').html("1");
+  }, 2000)
+  setTimeout(function(){
+    $('.countdown .counter h1').html("GO!");
+    allowType();
+  }, 3000)
+  setTimeout(function(){
+    $('.countdown').hide();
+  }, 4000)
+}
 window.GO_RACER_NS = {}
 
 window.GO_RACER_NS['parseTokens'] = function (elements){
@@ -147,7 +173,7 @@ window.GO_RACER_NS['prepareGameField'] = function(){
     }
   }
   // window.tokenElem = window.GO_RACER_NS.chooseNextAt(0);
-  window.onkeypress = window.GO_RACER_NS.onKeyPress;
+
 }
 
 window.GO_RACER_NS['user1'] = function(){

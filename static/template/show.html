@@ -75,6 +75,11 @@
       <h1>Results</h1>
       <ol></ol>
     </div>
+    <div class='countdown' style='display: none'>
+      <div class='counter'>
+        <h1></h1>
+      </div>
+    </div>
 <pre style="display:none;" id="template">
 {{.Code}}
 </pre>
@@ -119,6 +124,7 @@
         case "start":
           //TODO: Write start logic
           $(".join").hide();
+
           var template = $('#template');
           for(var id in window.users_ids) {
             var pre = $("<pre/>").html(template.html()).prop("id", 'code_'+id).addClass('prettyprint code_field');
@@ -130,6 +136,8 @@
           }
           var js = $("<script/>").attr('src', "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?callback=js_ident")
           $(document.body).append(js);
+
+          window.countDown();
           break;
         case "current_user":
           window.current_user_id = parseInt(params, 10);
