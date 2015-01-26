@@ -5,7 +5,10 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"math/rand"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -21,14 +24,30 @@ const (
 type MessageChannel chan string
 type KillChannel chan bool
 
+var SampleFiles []string
+
+func init() {
+	var err error
+	SampleFiles, err = filepath.Glob("static/samples/*")
+	if err != nil {
+		log.Panic(err)
+	}
+	fmt.Printf("%v\n", SampleFiles)
+}
+
 type Game struct {
 	Id string
 	Status
 	Clients
 	MessageChannel
 	KillChannel
+	CodeFile string
 }
 
+func (g *Game) Code() string {
+	content, _ := ioutil.ReadFile(g.CodeFile)
+	return string(content)
+}
 func (g *Game) KillBroadCast() {
 	g.KillChannel <- true
 }
@@ -105,7 +124,7 @@ func (g *Game) BroadCast() {
 type Status int
 
 func NewGame() *Game {
-	game := &Game{Id: NewId(), Clients: Clients{}, MessageChannel: make(MessageChannel, 100)}
+	game := &Game{Id: NewId(), Clients: Clients{}, MessageChannel: make(MessageChannel, 100), CodeFile: SampleFiles[rand.Intn(len(SampleFiles))]}
 	go game.BroadCast()
 	return game
 }
