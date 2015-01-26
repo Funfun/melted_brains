@@ -64,7 +64,7 @@ func (g *Game) Add(username string, conn *websocket.Conn) (int, error) {
 	g.PublishClients()
 	id := len(g.Clients) - 1
 	websocket.Message.Send(conn, fmt.Sprintf("current_user:%d", id))
-	if id == 1 {
+	if id == 3 {
 		g.Start()
 
 	}
