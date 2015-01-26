@@ -68,7 +68,7 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 			newUserTemplate.Execute(w, currentGame)
 		} else {
 			setUser(currentUser, w)
-			showTemplate.Execute(w, ShowView{Game: currentGame, User: currentUser})
+			showTemplate.Execute(w, ShowView{Game: currentGame, User: currentUser, HostAndPort: req.Host})
 		}
 	case "new_user":
 		createUser(w, req)
@@ -79,6 +79,7 @@ func GameHandler(w http.ResponseWriter, req *http.Request) {
 type ShowView struct {
 	*game.User
 	*game.Game
+	HostAndPort string
 }
 
 func getUser(req *http.Request) *game.User {

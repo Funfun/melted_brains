@@ -96,7 +96,7 @@
   }
   $(function() {
     username = $.cookie("username");
-    window.ws = new WebSocket("ws://localhost:8000/events/{{.Id}}?username="+username);
+    window.ws = new WebSocket("ws://{{.HostAndPort}}/events/{{.Id}}?username="+username);
 
     window.ws.onmessage = function(e) {
       var tokens = e.data.split(":");
