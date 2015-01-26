@@ -45,3 +45,16 @@
 .board {
   position: absolute;
 }
+.countdown {
+  position: absolute;
+  left: 50%;
+}
+.countdown div {
+  position: relative;
+  left: -50%;
+  border: dotted red 1px;
+}
+.counter {
+  width: 150px;
+  height: 150px;
+}
