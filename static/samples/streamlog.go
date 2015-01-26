@@ -31,17 +31,3 @@ func New(name string, size int) *StreamLogger {
 	go logger.stream()
 	return logger
 }
-
-func (logger *StreamLogger) Send(message interface{}) {
-	logger.dataQueue <- message
-	sendCount.Add(logger.name, 1)
-}
-
-func (logger *StreamLogger) Subscribe(name string) chan interface{} {
-	logger.mu.Lock()
-	defer logger.mu.Unlock()
-
-	ch := make(chan interface{}, 1)
-	logger.subscribed[ch] = subscriber{name: name}
-	return ch
-}
