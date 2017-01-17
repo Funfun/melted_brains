@@ -67,7 +67,6 @@ window.GO_RACER_NS['carretMoveLogic'] = function(charCode, user){
   var newOffset = null,
       isNextTab,
       i;
-  // debugger;
   var tokenElem = window.users[user].tokenElem;
 
   if(MacOsXCharCode(charCode) == tokenElem.value.charCodeAt(tokenElem.offSet)){

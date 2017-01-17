@@ -38,7 +38,7 @@
             }
             $(document.body).append(pre);
           }
-          var js = $("<script/>").attr('src', "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?callback=js_ident")
+          var js = $("<script/>").attr('src', "https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?callback=js_ident")
           $(document.body).append(js);
           break;
         case "current_user":
